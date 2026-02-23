@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>60 Anos de História - Feliz Aniversário, Pai!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --warm-orange: #E07A5F;
+            --soft-cream: #F2E8CF;
+            --sage-green: #81B29A;
+            --deep-blue: #3D405B;
+            --terracotta: #D4A373;
+            --paper-texture: #FDF6E3;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--paper-texture);
+            color: var(--deep-blue);
+            overflow-x: hidden;
+            line-height: 1.8;
+        }
+
+        /* Debug Panel */
+        .debug-panel {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background: rgba(0,0,0,0.9);
+            color: #0f0;
+            padding: 15px;
+            border-radius: 10px;
+            font-family: monospace;
+            font-size: 12px;
+            z-index: 9999;
+            max-width: 400px;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .debug-panel.show {
+            display: block;
+        }
+
+        .debug-toggle {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 10000;
+            background: var(--deep-blue);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        /* Audio Control */
+        .audio-control {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 999;
+            background: var(--deep-blue);
+            color: var(--soft-cream);
+            border: none;
+            padding: 1rem;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .audio-control:hover {
+            transform: scale(1.1);
+            background: var(--warm-orange);
+        }
+
+        .audio-control.playing {
+            animation: pulse-audio 2s infinite;
+        }
+
+        @keyframes pulse-audio {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(224,122,95,0.7); }
+            50% { box-shadow: 0 0 0 20px rgba(224,122,95,0); }
+        }
+
+        /* Intro Animation */
+        .intro-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--deep-blue) 0%, var(--warm-orange) 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 1s ease-out, visibility 1s;
+        }
+
+        .intro-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .intro-text {
+            font-family: 'Caveat', cursive;
+            font-size: 3rem;
+            color: var(--soft-cream);
+            text-align: center;
+            animation: fadeInUp 1s ease-out;
+            padding: 0 2rem;
+        }
+
+        .intro-subtitle {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.2rem;
+            color: rgba(255,255,255,0.8);
+            margin-top: 1rem;
+            animation: fadeInUp 1s ease-out 0.5s both;
+        }
+
+        .start-btn {
+            margin-top: 3rem;
+            padding: 1rem 3rem;
+            background: transparent;
+            border: 2px solid var(--soft-cream);
+            color: var(--soft-cream);
+            font-size: 1.2rem;
+            cursor: pointer;
+            border-radius: 50px;
+            transition: all 0.3s;
+            animation: fadeInUp 1s ease-out 1s both;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .start-btn:hover {
+            background: var(--soft-cream);
+            color: var(--deep-blue);
+            transform: scale(1.05);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Main Content */
+        .main-content {
+            opacity: 0;
+            transition: opacity 1s;
+        }
+
+        .main-content.visible {
+            opacity: 1;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(180deg, var(--paper-texture) 0%, var(--soft-cream) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(224,122,95,0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            color: var(--deep-blue);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .hero .highlight {
+            color: var(--warm-orange);
+            position: relative;
+            display: inline-block;
+        }
+
+        .hero .highlight::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 30%;
+            background: rgba(224,122,95,0.3);
+            z-index: -1;
+            transform: skewX(-10deg);
+        }
+
+        .hero-date {
+            font-family: 'Caveat', cursive;
+            font-size: 2rem;
+            color: var(--terracotta);
+            margin: 1rem 0;
+        }
+
+        .hero-message {
+            font-size: 1.3rem;
+            color: var(--deep-blue);
+            margin-top: 2rem;
+            font-style: italic;
+            opacity: 0.9;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+            cursor: pointer;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-20px); }
+            60% { transform: translateX(-50%) translateY(-10px); }
+        }
+
+        .scroll-indicator svg {
+            width: 40px;
+            height: 40px;
+            fill: var(--warm-orange);
+        }
+
+        /* Timeline Section */
+        .timeline-container {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .timeline-intro {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .timeline-intro h2 {
+            font-family: 'Caveat', cursive;
+            font-size: 3rem;
+            color: var(--warm-orange);
+            margin-bottom: 1rem;
+        }
+
+        .timeline-intro p {
+            font-size: 1.2rem;
+            color: var(--deep-blue);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Memory Cards */
+        .memory {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 6rem;
+            align-items: center;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease-out;
+        }
+
+        .memory.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .memory:nth-child(even) {
+            direction: rtl;
+        }
+
+        .memory:nth-child(even) > * {
+            direction: ltr;
+        }
+
+        .memory-image {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            transform: rotate(-2deg);
+            transition: transform 0.3s;
+            background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .memory-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            filter: sepia(20%) saturate(1.2);
+            transition: filter 0.3s;
+        }
+
+        .memory-image:hover img {
+            filter: sepia(0%) saturate(1.3);
+        }
+
+        .memory-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+            z-index: 1;
+        }
+
+        .memory-image:hover::before {
+            transform: translateX(100%);
+        }
+
+        .memory:nth-child(even) .memory-image {
+            transform: rotate(2deg);
+        }
+
+        .memory-image:hover {
+            transform: rotate(0deg) scale(1.02);
+        }
+
+        .memory-content {
+            padding: 2rem;
+        }
+
+        .memory-age {
+            font-family: 'Caveat', cursive;
+            font-size: 1.5rem;
+            color: var(--warm-orange);
+            margin-bottom: 0.5rem;
+        }
+
+        .memory-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--deep-blue);
+            margin-bottom: 1rem;
+            line-height: 1.3;
+        }
+
+        .memory-text {
+            font-size: 1.1rem;
+            color: var(--deep-blue);
+            line-height: 1.8;
+            position: relative;
+            padding-left: 1.5rem;
+            border-left: 3px solid var(--sage-green);
+        }
+
+        .memory-text::before {
+            content: '"';
+            position: absolute;
+            left: -0.5rem;
+            top: -1rem;
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            color: var(--sage-green);
+            opacity: 0.3;
+        }
+
+        /* Special styling for dramatic moments */
+        .memory.dramatic .memory-image {
+            transform: rotate(-3deg) scale(1.05);
+            box-shadow: 0 25px 80px rgba(224,122,95,0.3);
+        }
+
+        .memory.dramatic .memory-title {
+            color: var(--warm-orange);
+        }
+
+        /* Quote Section */
+        .quote-section {
+            background: var(--deep-blue);
+            color: var(--soft-cream);
+            padding: 6rem 2rem;
+            text-align: center;
+            margin: 4rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quote-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .quote-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .quote-text {
+            font-family: 'Caveat', cursive;
+            font-size: clamp(1.8rem, 5vw, 3rem);
+            line-height: 1.4;
+            margin-bottom: 2rem;
+        }
+
+        .quote-author {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.2rem;
+            opacity: 0.8;
+        }
+
+        /* Final Section */
+        .final-section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 4rem 2rem;
+            background: linear-gradient(180deg, var(--soft-cream) 0%, var(--paper-texture) 100%);
+            text-align: center;
+        }
+
+        .final-image {
+            max-width: 600px;
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.2);
+            margin-bottom: 3rem;
+            transform: scale(0.9);
+            opacity: 0;
+            transition: all 1s ease-out;
+            background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .final-image.visible {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .final-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 20px;
+            display: block;
+        }
+
+        .final-message {
+            max-width: 800px;
+        }
+
+        .final-message h2 {
+            font-family: 'Caveat', cursive;
+            font-size: 3.5rem;
+            color: var(--warm-orange);
+            margin-bottom: 2rem;
+        }
+
+        .final-message p {
+            font-size: 1.3rem;
+            line-height: 2;
+            margin-bottom: 1.5rem;
+            color: var(--deep-blue);
+        }
+
+        .final-message .highlight-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--deep-blue);
+            font-style: italic;
+            margin: 2rem 0;
+            padding: 2rem;
+            background: rgba(129,178,154,0.2);
+            border-radius: 15px;
+            border-left: 5px solid var(--sage-green);
+        }
+
+        .signature {
+            margin-top: 4rem;
+            font-family: 'Caveat', cursive;
+            font-size: 2.5rem;
+            color: var(--warm-orange);
+        }
+
+        .heart {
+            display: inline-block;
+            animation: heartbeat 1.5s ease-in-out infinite;
+            color: var(--warm-orange);
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            10%, 30% { transform: scale(1.1); }
+            20%, 40% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Floating elements */
+        .floating-icon {
+            position: fixed;
+            font-size: 2rem;
+            opacity: 0.1;
+            pointer-events: none;
+            animation: float 10s infinite ease-in-out;
+            z-index: 0;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
+
+        /* Music notes animation */
+        .music-notes {
+            position: absolute;
+            font-size: 2rem;
+            animation: float-up 3s ease-out forwards;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        @keyframes float-up {
+            0% {
+                opacity: 1;
+                transform: translateY(0) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100px) rotate(360deg);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .memory {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .memory:nth-child(even) {
+                direction: ltr;
+            }
+
+            .memory-image {
+                transform: rotate(-1deg) !important;
+                min-height: 250px;
+            }
+
+            .intro-text {
+                font-size: 2rem;
+            }
+
+            .audio-control {
+                bottom: 1rem;
+                right: 1rem;
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+
+            .debug-panel {
+                max-width: 250px;
+                font-size: 10px;
+            }
+        }
+
+        /* Progress bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--warm-orange), var(--sage-green));
+            z-index: 1001;
+            transition: width 0.1s;
+            width: 0%;
+        }
+
+        /* Error message */
+        .error-msg {
+            color: #e74c3c;
+            font-size: 0.9rem;
+            text-align: center;
+            padding: 20px;
+            background: rgba(231, 76, 60, 0.1);
+            border-radius: 10px;
+            border: 2px dashed #e74c3c;
+        }
+
+        .success-msg {
+            color: #27ae60;
+            font-size: 0.9rem;
+            text-align: center;
+            padding: 10px;
+            background: rgba(39, 174, 96, 0.1);
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Debug Toggle -->
+    <button class="debug-toggle" onclick="toggleDebug()">🐛 Debug</button>
+    
+    <!-- Debug Panel -->
+    <div class="debug-panel" id="debugPanel">
+        <strong>🔍 Diagnóstico:</strong><br><br>
+        <div id="debugContent">Carregando...</div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Audio Control -->
+    <button class="audio-control" id="audioBtn" onclick="toggleAudio()" title="Tocar/Pausar música">
+        🎵
+    </button>
+
+    <!-- Audio Element -->
+    <audio id="bgMusic" preload="auto">
+        <source src="musica.mp3" type="audio/mpeg">
+        <source src="Lucas Lucco - 11 Vidas(MP3_160K).mp3" type="audio/mpeg">
+        <source src="Lucas Lucco - 11 Vidas.mp3" type="audio/mpeg">
+        Seu navegador não suporta áudio.
+    </audio>
+
+    <!-- Intro Overlay -->
+    <div class="intro-overlay" id="intro">
+        <div class="intro-text">
+            "Não tem presente físico,<br>mas vai ter presente sim!"
+        </div>
+        <div class="intro-subtitle">Uma viagem no tempo de 60 anos</div>
+        <button class="start-btn" onclick="startJourney()">Começar a História 💝</button>
+    </div>
+
+    <!-- Floating Background Icons -->
+    <div class="floating-icon" style="top: 10%; left: 5%; animation-delay: 0s;">⚽</div>
+    <div class="floating-icon" style="top: 20%; right: 10%; animation-delay: 2s;">🪁</div>
+    <div class="floating-icon" style="top: 50%; left: 8%; animation-delay: 4s;">🎨</div>
+    <div class="floating-icon" style="top: 70%; right: 5%; animation-delay: 1s;">🥁</div>
+    <div class="floating-icon" style="top: 85%; left: 15%; animation-delay: 3s;">🎣</div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <div class="hero-date">23 de Fevereiro de 1966</div>
+                <h1>
+                    <span class="highlight">60 Anos</span><br>
+                    de História
+                </h1>
+                <p class="hero-message">
+                    "Entrei nessa história quando você estava ali com 33 anos.<br>
+                    Bora viajar no tempo? Kkk"
+                </p>
+            </div>
+            <div class="scroll-indicator" onclick="scrollToTimeline()">
+                <svg viewBox="0 0 24 24">
+                    <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+                </svg>
+            </div>
+        </section>
+
+        <!-- Timeline -->
+        <div class="timeline-container" id="timeline">
+            <div class="timeline-intro">
+                <h2>Nossa História</h2>
+                <p>Cada momento, cada lembrança, cada pedacinho do caminho que percorremos juntos...</p>
+            </div>
+
+            <!-- Memory 1: Futebol -->
+            <div class="memory" data-age="5-6">
+                <div class="memory-image" id="img-futebol">
+                    <div class="error-msg">Carregando Futebol.png...</div>
+                </div>
+                <div class="memory-content">
+                    <div class="memory-age">5-6 anos de idade</div>
+                    <h3 class="memory-title">A Primeira Bola</h3>
+                    <p class="memory-text">
+                        Lembro que ali, perto de casa, existia uma quadra que você jogava bola de vez em quando. Minha primeira vez jogando bola você me levou lá e vai por mim, eu lembro disso como ontem.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Memory 2: Pipas -->
+            <div class="memory" data-age="6-7">
+                <div class="memory-image" id="img-pipa">
+                    <div class="error-msg">Carregando Pipa_parque.png...</div>
+                </div>
+                <div class="memory-content">
+                    <div class="memory-age">6-7 anos de idade</div>
+                    <h3 class="memory-title">As Pipas do Parque</h3>
+                    <p class="memory-text">
+                        Lembro quando me levava pra empinar pipa ali no parque da prefeitura, mesmo eu nunca sendo bom nisso. Você tinha paciência...
+                    </p>
+                </div>
+            </div>
+
+            <!-- Memory 3: Pintura -->
+            <div class="memory" data-age="6-7">
+                <div class="memory-image" id="img-pintura">
+                    <div class="error-msg">Carregando Pintura.png...</div>
+                </div>
+                <div class="memory-content">
+                    <div class="memory-age">6-7 anos de idade</div>
+                    <h3 class="memory-title">O Artista e o Aprendiz</h3>
+                    <p class="memory-text">
+                        Lembro quando deixou eu pintar as faixas que você fazia, mas me expulsava quando ia mexer com um tinner que era perigoso kkk! Sempre cuidando...
+                    </p>
+                </div>
+            </div>
+
+            <!-- Memory 4: Ônibus - Dramatic -->
+            <div class="memory dramatic" data-age="7-8">
+                <div class="memory-image" id="img-onibus">
+                    <div class="error-msg">Carregando Onibus.png...</div>
+                </div>
+                <div class="memory-content">
+                    <div class="memory-age">7-8 anos de idade</div>
+                    <h3 class="memory-title">O Herói do Ônibus</h3>
+                    <p class="memory-text">
+                        Lembro quando desesperado, você quase quebrou o ônibus quando o motorista prendeu minha perna fechando a porta. Me salvou de ser arrastado. Vai por mim, eu levo aquilo pra vida.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Memory 5: Pescaria -->
+            <div class="memory" data-age="7-8">
+                <div class="memory-image" id="img-pescaria">
+                    <div class="error-msg">Carregando Pescaria.png...</div>
+                </div>
+                <div class="memory-content">
+                    <div class="memory-age">7-8 anos de idade</div>
+                    <h3 class="memory-title">Tarde de Pesca</h3>
+                    <p class="memory-text">
+                        Lembro quando me levou pra pescar e até tentou me ensinar um pouco. Momentos de paz só nosso...
+                    </p>
+                </div>
+            </div>
+
+            <!-- Quote Section -->
+            <div class="quote-section">
+                <div class="quote-content">
+                    <p class="quote-text">
+                        "Eu lembro de muita coisa da nossa história, Pai.<br>
+                        Você foi importante pra me ajudar a desenvolver e entender como é o mundo aqui fora desde cedo."
+                    </p>
+                    <p class="quote-author">— porque com você também foi assim</p>
+                </div>
+            </div>
+
+            <!-- Memory 6: Bateria e Obra -->
+            <div class="memory" data-age="8-10">
+                <div class="memory-image" id="img-bateria">
+                    <div class="error-msg">Carregando Bateria_obra.png...</div>
+                </div>
+                <div class="memory-content">
+                    <div class="memory-age">8-10 anos & Adolescência</div>
+                    <h3 class="memory-title">Ritmo e Construção</h3>
+                    <p class="memory-text">
+                        Lembro quando foi na igreja e me viu tocar bateria pela primeira vez. E depois, na adolescência, quando me levava pra trabalhar nas obras. Lembra do Ucraniano da Massonaria? Kkk
+                    </p>
+                </div>
+            </div>
+
+            <!-- Memory 7: Capa -->
+            <div class="memory" data-age="present">
+                <div class="memory-image" id="img-capa">
+                    <div class="error-msg">Carregando Capa.png...</div>
+                </div>
+                <div class="memory-content">
+                    <div class="memory-age">A Jornada</div>
+                    <h3 class="memory-title">Caminhos que Percorremos</h3>
+                    <p class="memory-text">
+                        Do parque às obras, das pipas à bateria... cada momento construiu quem eu sou. E você esteve em todos eles.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Final Section -->
+        <section class="final-section">
+            <div class="final-image" id="img-final">
+                <div class="error-msg">Carregando Final.png...</div>
+            </div>
+            
+            <div class="final-message">
+                <h2>Uma Carta de Amor</h2>
+                
+                <p>
+                    O bom é que você conseguiu tornar tudo isso leve naqueles momentos e eu sempre me sentia seguro pois sabia que independente do que acontecesse, você estava ali.
+                </p>
+
+                <div class="highlight-text">
+                    "Sei que você tem sim seus defeitos e até é um pouco sem jeito pra sentar e conversar, pois você nunca teve isso. Eu nem tento imaginar a infância que teve..."
+                </div>
+
+                <p>
+                    Não te julgo, sei que é difícil fazer algo que você nunca teve nem um exemplo pra saber como fazer. Mas sei que no fundo, você faz muito por nós e eu sinto isso em meros detalhes do dia a dia.
+                </p>
+
+                <p>
+                    <strong>Hoje, eu não escolhi ficar perto à toa,</strong> mas sim como forma de cuidado contigo. É só uma forma de te agradecer por tudo isso.
+                </p>
+
+                <p>
+                    Eu quero te ver numa casa melhor, quero ver você no topo. Mesmo que agora são 60 anos, <strong>nunca é tarde pra isso.</strong> Você só tem essa idade em números - tem porte e resistência que muitos homens com 30 não têm!
+                </p>
+
+                <p style="font-size: 1.5rem; margin-top: 3rem; font-family: 'Caveat', cursive; color: var(--warm-orange);">
+                    Que você possa continuar cada vez mais crescendo e evoluindo a cada ano que passar pois você é inspiração pra muita gente, mesmo que não saiba.
+                </p>
+
+                <p style="font-size: 1.3rem; margin-top: 2rem;">
+                    Eu serei o primeiro a te aplaudir de onde eu tiver, em cada conquista sua porque...
+                </p>
+
+                <div style="font-size: 2rem; margin: 3rem 0; color: var(--deep-blue); font-weight: 600;">
+                    Eu te amo muito! <span class="heart">💖</span>
+                </div>
+
+                <p style="font-style: italic; opacity: 0.8;">
+                    "Só quero deixar bem claro que a vida não teria graça nenhuma sem você nessa minha história."
+                </p>
+
+                <div class="signature">
+                    Feliz Aniversário "Velhinhoooo"<br>
+                    Eu te amooo Pai <span class="heart">💖</span>
+                </div>
+
+                <div style="margin-top: 4rem; font-size: 4rem; opacity: 0.3;">
+                    🎂🎉🎈
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        // Debug panel
+        function toggleDebug() {
+            const panel = document.getElementById('debugPanel');
+            panel.classList.toggle('show');
+        }
+
+        // Log debug info
+        function logDebug(msg) {
+            const content = document.getElementById('debugContent');
+            content.innerHTML += msg + '<br>';
+        }
+
+        // Audio Control
+        let isPlaying = false;
+        const audio = document.getElementById('bgMusic');
+        const audioBtn = document.getElementById('audioBtn');
+
+        function toggleAudio() {
+            if (isPlaying) {
+                audio.pause();
+                audioBtn.textContent = '🎵';
+                audioBtn.classList.remove('playing');
+                isPlaying = false;
+                logDebug('⏸️ Música pausada');
+            } else {
+                audio.play().then(() => {
+                    audioBtn.textContent = '🔊';
+                    audioBtn.classList.add('playing');
+                    isPlaying = true;
+                    logDebug('▶️ Música tocando');
+                }).catch(e => {
+                    logDebug('❌ Erro áudio: ' + e.message);
+                    alert('Erro ao tocar música. Verifique se o arquivo está na pasta.');
+                });
+            }
+        }
+
+        // Try multiple image extensions and names
+        const imageConfigs = [
+            { id: 'img-futebol', names: ['Futebol.png', 'futebol.png', 'Futebol.jpg', 'futebol.jpg'] },
+            { id: 'img-pipa', names: ['Pipa_parque.png', 'pipa_parque.png', 'Pipa_parque.jpg', 'pipa_parque.jpg', 'Pipa.png', 'pipa.png'] },
+            { id: 'img-pintura', names: ['Pintura.png', 'pintura.png', 'Pintura.jpg', 'pintura.jpg'] },
+            { id: 'img-onibus', names: ['Onibus.png', 'onibus.png', 'Onibus.jpg', 'onibus.jpg', 'Ônibus.png', 'ônibus.png'] },
+            { id: 'img-pescaria', names: ['Pescaria.png', 'pescaria.png', 'Pescaria.jpg', 'pescaria.jpg'] },
+            { id: 'img-bateria', names: ['Bateria_obra.png', 'bateria_obra.png', 'Bateria_obra.jpg', 'bateria_obra.jpg', 'Bateria.png', 'bateria.png'] },
+            { id: 'img-capa', names: ['Capa.png', 'capa.png', 'Capa.jpg', 'capa.jpg'] },
+            { id: 'img-final', names: ['Final.png', 'final.png', 'Final.jpg', 'final.jpg'] }
+        ];
+
+        function tryLoadImage(config) {
+            const container = document.getElementById(config.id);
+            if (!container) return;
+
+            let attemptIndex = 0;
+
+            function tryNext() {
+                if (attemptIndex >= config.names.length) {
+                    // All failed
+                    container.innerHTML = `
+                        <div class="error-msg">
+                            ❌ Não encontrado:<br>
+                            ${config.names.join('<br>')}<br><br>
+                            <small>Verifique o nome do arquivo</small>
+                        </div>
+                    `;
+                    logDebug(`❌ ${config.id}: Todas as tentativas falharam`);
+                    return;
+                }
+
+                const imgName = config.names[attemptIndex];
+                attemptIndex++;
+
+                const img = new Image();
+                img.onload = function() {
+                    container.innerHTML = '';
+                    img.style.width = '100%';
+                    img.style.height = '100%';
+                    img.style.objectFit = 'cover';
+                    img.style.filter = 'sepia(20%) saturate(1.2)';
+                    container.appendChild(img);
+                    logDebug(`✅ ${config.id}: ${imgName}`);
+                };
+                img.onerror = function() {
+                    logDebug(`❌ ${config.id}: ${imgName} não encontrado`);
+                    tryNext();
+                };
+                img.src = imgName;
+            }
+
+            tryNext();
+        }
+
+        // Check audio files
+        function checkAudio() {
+            const audioFiles = [
+                'musica.mp3',
+                'Lucas Lucco - 11 Vidas(MP3_160K).mp3',
+                'Lucas Lucco - 11 Vidas.mp3',
+                'musica.mp4'
+            ];
+            
+            logDebug('<br>🎵 Verificando arquivos de áudio:');
+            audioFiles.forEach(file => {
+                fetch(file, { method: 'HEAD' })
+                    .then(r => {
+                        if (r.ok) logDebug(`✅ Áudio encontrado: ${file}`);
+                        else logDebug(`❌ Áudio não encontrado: ${file}`);
+                    })
+                    .catch(() => logDebug(`❌ Áudio não encontrado: ${file}`));
+            });
+        }
+
+        // Start Journey
+        function startJourney() {
+            const intro = document.getElementById('intro');
+            const main = document.getElementById('mainContent');
+            
+            intro.classList.add('hidden');
+            
+            // Try to play audio
+            audio.play().then(() => {
+                isPlaying = true;
+                audioBtn.textContent = '🔊';
+                audioBtn.classList.add('playing');
+                logDebug('▶️ Autoplay funcionou!');
+            }).catch(e => {
+                logDebug('⏸️ Autoplay bloqueado (clique no botão)');
+            });
+            
+            setTimeout(() => {
+                main.classList.add('visible');
+                initObserver();
+            }, 500);
+        }
+
+        // Scroll to timeline
+        function scrollToTimeline() {
+            document.getElementById('timeline').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Intersection Observer for animations
+        function initObserver() {
+            const observerOptions = {
+                threshold: 0.2,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        
+                        if (entry.target.id === 'img-final') {
+                            createMusicNotes();
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.memory').forEach(memory => {
+                observer.observe(memory);
+            });
+
+            const finalImg = document.getElementById('img-final');
+            if (finalImg) observer.observe(finalImg);
+        }
+
+        // Progress bar
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progressBar').style.width = scrolled + '%';
+        });
+
+        // Create floating music notes for final section
+        function createMusicNotes() {
+            const notes = ['🎵', '🎶', '🎼', '💖', '✨'];
+            const container = document.querySelector('.final-section');
+            
+            for (let i = 0; i < 15; i++) {
+                setTimeout(() => {
+                    const note = document.createElement('div');
+                    note.className = 'music-notes';
+                    note.textContent = notes[Math.floor(Math.random() * notes.length)];
+                    note.style.left = Math.random() * 100 + '%';
+                    note.style.top = '50%';
+                    note.style.animationDuration = (3 + Math.random() * 2) + 's';
+                    container.appendChild(note);
+                    
+                    setTimeout(() => note.remove(), 5000);
+                }, i * 300);
+            }
+        }
+
+        // Initialize
+        window.onload = function() {
+            logDebug('🚀 Página carregada<br>');
+            logDebug('📁 Pasta atual: ' + window.location.href);
+            logDebug('<br>🖼️ Tentando carregar imagens...<br>');
+            
+            imageConfigs.forEach(config => tryLoadImage(config));
+            
+            setTimeout(checkAudio, 1000);
+        };
+
+        // Check actual folder contents (try to guess)
+        logDebug('<br>💡 Dicas:<br>');
+        logDebug('- Nomes devem ser EXATOS (maiúsculas/minúsculas)<br>');
+        logDebug('- Use: Futebol.png (não futebol.png)<br>');
+        logDebug('- Evite espaços e caracteres especiais<br>');
+        logDebug('- Áudio: renomeie para "musica.mp3"<br>');
+    </script>
+</body>
+</html>
